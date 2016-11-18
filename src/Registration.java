@@ -10,33 +10,33 @@ public class Registration {
     // Add new course, only request with non-exists studentID/courseID
     // is a valid request. Invalid request will cause an exception
     public void add(IRequest request) {
-        if (request.getRequestType()== 1) {
-            if (exists(request) == false) {
+        if (request.getRequestType()== IRequest.REQUEST_ADD) {
+            if (!exists(request)) {
                 requestList.add(request);
             } else {
                 throw new RuntimeException("You has been enrolled this course.");
             }
         } else {
-            throw new RuntimeException("Enroll is successfully.");
+            throw new RuntimeException("Wrong request type");
         }
     }
 
     // Drop existing course, only request with existing studentID/courseID
     // is a valid request. Invalid request will cause an exception
     public void drop(IRequest request) {
-        if (request.getRequestType() == 2) {
-            if (exists(request) == true) {
+        if (request.getRequestType() == IRequest.REQUEST_DROP) {
+            if (exists(request)) {
                 requestList.remove(request);
             } else {
-                System.out.println("Not found!!!");
+                throw new RuntimeException("You has not been enrolled this course.");
             }
         } else {
-            throw new RuntimeException("Drop is successfully.");
+            throw new RuntimeException("Wrong request type.");
         }
     }
 
     // Check whether the request is in repository.
-    public boolean exists(IRequest request) {
+    private boolean exists(IRequest request) {
         return requestList.contains(request);
     }
 
@@ -48,8 +48,8 @@ public class Registration {
     // Count requests by request type
     public int countByType(int type) {
         int j = 0;
-        for (int i = 0; i < requestList.size(); i++) {
-            if (requestList.get(i).getRequestType() == type) {
+        for (IRequest r : requestList) {
+            if (r.getRequestType() == type) {
                 j = j+1 ;
             }
         }
@@ -60,9 +60,9 @@ public class Registration {
     // Count request by course ID
     public int countByCourseID(String courseID) {
         int j = 0;
-        for (int i = 0; i < requestList.size(); i++) {
-            if (requestList.get(i).getCourseID() == courseID) {
-                j = j+1 ;
+        for(IRequest r : requestList) {
+            if (r.getCourseID().equals(courseID)) {
+                j = j + 1;
             }
         }
         return j;
@@ -71,8 +71,8 @@ public class Registration {
     // Count request by student ID
     public int countByStudentID(String studentID) {
         int j = 0;
-        for (int i = 0; i < requestList.size(); i++) {
-            if (requestList.get(i).getStudentID() == studentID) {
+        for (IRequest r : requestList){
+            if (r.getStudentID().equals(studentID)){
                 j = j+1 ;
             }
         }

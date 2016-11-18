@@ -25,13 +25,11 @@ public class Request implements IRequest {
 
     @Override
     public String setStudentID(String studentID) {
-        String Old_student_ID;
         if (studentID != null){
-            Old_student_ID = this.studentID;
-            this.studentID = studentID;
-            return Old_student_ID;
+            Request.studentID = studentID;
+            return studentID;
         }else{
-            throw new RuntimeException("Empty List!");
+            throw new RuntimeException("StudentID is null!");
         }
     }
 
@@ -42,10 +40,10 @@ public class Request implements IRequest {
 
     @Override
     public void setCourseID(String courseID) {
-        if (studentID != null){
-            this.courseID = courseID;
+        if (courseID != null){
+            Request.courseID = courseID;
         }else{
-            throw new RuntimeException("Empty List!");
+            throw new RuntimeException("CourseID is null");
         }
     }
 
@@ -56,10 +54,11 @@ public class Request implements IRequest {
 
     @Override
     public int setType(int type){
-        if (type == 1 || type == 2) {
+        if (type == IRequest.REQUEST_ADD || type == IRequest.REQUEST_DROP) {
+            Request.type = type;
             return type;
         } else {
-            throw new RuntimeException("InValid Type");
+            throw new RuntimeException("Invalid Type");
         }
     }
 }
